@@ -1,0 +1,2 @@
+* SATIE OSC
+A Blender addon to link Blender objects with SATIE (Spatial Audio Toolkit for Immersive Environments) https://github.com/nicobou/satie
