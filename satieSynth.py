@@ -30,10 +30,9 @@ def instanceHandler():
     if len(bpy.context.selected_objects) is 1:
         currentObj = bpy.context.object
         if currentObj.select:
-            print("handling instance")
+            print("acting on ", currentObj)
 
 def instanceCb(scene):
-    print("******** instance callback")
     instanceHandler()
 
 def cleanCallbackQueue():
