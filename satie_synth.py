@@ -3,7 +3,10 @@ import liblo
 import os
 
 class SatieSynth():
-    """Object representing a synth in SATIE"""
+    """
+    Object representing a synth in SATIE
+    This implementation uses the satieOSC prorocol
+    """
     def __init__(self, parent, id, plugin):
         """
         Parems:
@@ -15,7 +18,7 @@ class SatieSynth():
         self.id = id
         self.synth = None
         self.oscaddress = liblo.Address("localhost", 18032)
-        self.oscbaseurl = "/spatosc/core"
+        self.oscbaseurl = "/SATIE"
         self.sourceOSCuri = None
         self.connection = None
         self.listener = "ear"
@@ -23,12 +26,11 @@ class SatieSynth():
         self.selected = False
         self.playing = False
         self.createSource()
-        self.setURIplugin(plugin)
+        # self.setURIplugin(plugin)
         self.play()
 
     def createSource(self):
-        liblo.send(self.oscaddress, self.oscbaseurl, "createSoundSource", self.id)
-        self.sourceOSCuri = os.path.join(self.oscbaseurl, "source", self.id)
+        liblo.send(self.oscaddress, self.oscbaseurl, "create", self.id)
 
     def setURIplugin(self, plugin):
         """
