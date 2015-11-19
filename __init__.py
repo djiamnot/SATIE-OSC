@@ -12,14 +12,14 @@ bl_info = {
 }
 
 from . import properties as SatieProperties
-from . import satieSynth as ss
+from . import satie_object as so
 
 addon_keymaps = []
 
 def register():
     print("registering SatieSynth")
     bpy.utils.register_class(SatieProperties.SatieProperties)
-    bpy.utils.register_class(ss.SatieObject)
+    bpy.utils.register_class(so.SatieObject)
 
     bpy.types.Object.useSatie = bpy.props.BoolProperty(
                 name = "Use SATIE",
@@ -50,7 +50,7 @@ def register():
     # handle the keymap
     wm = bpy.context.window_manager
     km = wm.keyconfigs.addon.keymaps.new(name='Object Mode', space_type='EMPTY')
-    kmi = km.keymap_items.new(ss.SatieObject.bl_idname, 'SPACE', 'PRESS', ctrl=True, shift=True)
+    kmi = km.keymap_items.new(so.SatieObject.bl_idname, 'SPACE', 'PRESS', ctrl=True, shift=True)
     addon_keymaps.append((km, kmi))
 #end register
 
@@ -60,11 +60,12 @@ def unregister():
         km.keymap_items.remove(kmi)
     addon_keymaps.clear()
     bpy.utils.unregister_class(SatieProperties.SatieProperties)
-    bpy.utils.unregister_class(ss.SatieObject)
-    ss.cleanCallbackQueue()
+    bpy.utils.unregister_class(so.SatieObject)
+    so.cleanCallbackQueue()
     bpy.types.Object.useSatie
     bpy.types.Object.satieID
     bpy.types.Object.satieURI
+
 
 if __name__ == "__main__":
     register()
