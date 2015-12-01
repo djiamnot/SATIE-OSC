@@ -1,16 +1,34 @@
 import bpy
 import liblo
 import os
+from . import satie_synth as ss
 
+synths = []
 
 def instanceHandler():
+    sObj = [obj.id for obj in synths]
     if len(bpy.context.selected_objects) is 1:
         currentObj = bpy.context.object
-        if currentObj.select:
-            print("acting on ", currentObj)
+        if currentObj.select and currentObj.useSatie:
+            if currentObj.satieID in sObj:
+                print("not adding {} to synths because it already exists: {}".format(currentObj, synths))
+                pass
+            else:
+                print("acting on ", currentObj)
+                synths.append(ss.SatieSynth(currentObj, currentObj.satieID, currentObj.satieURI))
+                print("current synths", synths)
+        if not currentObj.useSatie and currentObj.satieID in sObj:
+            print("contents of synths before remove {}".format(synths))
+            print("removing {}".format(currentObj.satieID))
+            o = [x for x in synths if x.id == currentObj.satieID]
+            for i in o:
+                i.deleteNode()
+                synths.remove(i)
+            print("contents of synths after remove {}".format(synths))
 
 def instanceCb(scene):
     instanceHandler()
+    
 
 def cleanCallbackQueue():
     if instanceCb in bpy.app.handlers.scene_update_post:
