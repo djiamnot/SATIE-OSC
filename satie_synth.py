@@ -1,6 +1,10 @@
 import bpy
 import liblo
+import math
 import os
+from . import utils
+
+print("imported satie synth module")
 
 class SatieSynth():
     """
@@ -12,16 +16,12 @@ class SatieSynth():
         Parems:
         parent - bpy_types.Object
         id - parent's satieID
-        plugin - SATIE plusgin (parent's satieURI property)
         """
         print("instantiated a synth object")
         self.id = id
         self.synth = None
         self.oscaddress = liblo.Address("localhost", 18032)
         self.oscbaseurl = "/SATIE"
-        self.sourceOSCuri = None
-        self.connection = None
-        self.listener = "ear"
         self.myParent = parent
         self.selected = False
         self.playing = False
@@ -30,23 +30,12 @@ class SatieSynth():
         self.play()
 
     def createSource(self):
-        liblo.send(self.oscaddress, self.oscbaseurl, "create", self.id)
-
-    def setURIplugin(self, plugin):
-        """
-        A plugin in this blender addon must include the type (i.e. plugin, file, etc.)
-        """
-        self.synth = plugin
-        plugin = plugin
-        path = os.path.join(self.sourceOSCuri, "uri")
-        liblo.send(self.oscaddress, path, plugin)
-        liblo.send(self.oscaddress, self.oscbaseurl, "connect", self.id, self.listener)
-        self.connection = os.path.join(self.oscbaseurl, "connection", self.id + "->" + self.listener)
+        liblo.send(self.oscaddress, self.oscbaseurl, "create", self.id, self.synth)
 
     def deleteNode(self):
         liblo.send(self.oscaddress, self.oscbaseurl, "deleteNode", self.id)
 
-    def setState(self, val):
+    def set(self, val):
         if not val:
             self.playing = False
         else:
@@ -55,12 +44,14 @@ class SatieSynth():
         liblo.send(self.oscaddress, uri, val)
 
     def play(self):
-        uri = os.path.join(self.sourceOSCuri, "state")
-        liblo.send(self.oscaddress, uri, 1)
-        if "zkarpluck" in self.synth:
-            print("using plugin: {}".format(self.synth))
-            uri = os.path.join(self.sourceOSCuri, "event")
-            liblo.send(self.oscaddress, uri, "t_trig", 1)
+        print("play", self)
+        
+        # uri = os.path.join(self.sourceOSCuri, "state")
+        # liblo.send(self.oscaddress, uri, 1)
+        # if "zkarpluck" in self.synth:
+        #     print("using plugin: {}".format(self.synth))
+        #     uri = os.path.join(self.sourceOSCuri, "event")
+        #     liblo.send(self.oscaddress, uri, "t_trig", 1)
                 
     def sendUpdate(self):
         uri = os.path.join(self.connection, "update")
@@ -91,8 +82,8 @@ class SatieSynth():
     def _getAED(self):
         distance = self._getLocation()
         # print("----> distance {}".format(distance))
-        aed = xyz_to_aed(distance)
+        aed = utils.xyz_to_aed(distance)
         # print("---------> aed {}".format(aed))
-        gain = math.log(distance_to_attenuation(aed[2])) * 20
+        gain = math.log(utils.distance_to_attenuation(aed[2])) * 20
         aed[2] = gain
         return aed
