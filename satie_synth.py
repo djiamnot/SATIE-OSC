@@ -20,6 +20,7 @@ class SatieSynth():
         print("instantiated a synth object")
         self.id = id
         self.synth = None
+        self.group = "default"
         self.oscaddress = liblo.Address("localhost", 18032)
         self.oscbaseurl = "/SATIE"
         self.myParent = parent
@@ -30,10 +31,11 @@ class SatieSynth():
         self.play()
 
     def createSource(self):
-        liblo.send(self.oscaddress, self.oscbaseurl, "create", self.id, self.synth)
+        oscURI = os.path.join(self.oscbaseurl, self.group)
+        liblo.send(self.oscaddress, oscURI, "create", self.id, self.synth)
 
     def deleteNode(self):
-        liblo.send(self.oscaddress, self.oscbaseurl, "deleteNode", self.id)
+        liblo.send(self.oscaddress, self.oscbaseurl, "delete", self.id)
 
     def set(self, val):
         if not val:
