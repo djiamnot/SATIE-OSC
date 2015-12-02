@@ -19,34 +19,39 @@ class SatieSynth():
         """
         print("instantiated a synth object")
         self.id = id
-        self.synth = None
+        self.synth = plugin
         self.group = "default"
         self.oscaddress = liblo.Address("localhost", 18032)
         self.oscbaseurl = "/SATIE"
+        self.oscURI = None
         self.myParent = parent
         self.selected = False
         self.playing = False
+        self.setURI()
         self.createSource()
         # self.setURIplugin(plugin)
         self.play()
 
+    def setURI(self):
+        self.oscURI = os.path.join(self.oscbaseurl, self.group, self.id)
+
     def createSource(self):
-        oscURI = os.path.join(self.oscbaseurl, self.group)
-        liblo.send(self.oscaddress, oscURI, "create", self.id, self.synth)
+        liblo.send(self.oscaddress, self.oscURI, "create", self.id, self.synth)
 
     def deleteNode(self):
-        liblo.send(self.oscaddress, self.oscbaseurl, "delete", self.id)
+        liblo.send(self.oscaddress, self.oscURI, "delete")
 
-    def set(self, val):
+    def set(self, prop, val):
         if not val:
             self.playing = False
         else:
             self.playing = True
-        uri = os.path.join(self.sourceOSCuri, "state")
-        liblo.send(self.oscaddress, uri, val)
+        liblo.send(self.oscaddress, self.oscURI, prop, val)
 
     def play(self):
         print("play", self)
+        liblo.send(self.oscaddress, self.oscURI, "t_trig", 1)
+        print("sent play")
         
         # uri = os.path.join(self.sourceOSCuri, "state")
         # liblo.send(self.oscaddress, uri, 1)
@@ -55,13 +60,9 @@ class SatieSynth():
         #     uri = os.path.join(self.sourceOSCuri, "event")
         #     liblo.send(self.oscaddress, uri, "t_trig", 1)
                 
-    def sendUpdate(self):
-        uri = os.path.join(self.connection, "update")
-        msg = self._getAED()
-        msg.append(0)
-        msg.append(22050)
-        print(msg)
-        liblo.send(self.oscaddress, uri, *msg)
+    def updateAED(self):
+        azi, ele, gain = self._getAED()
+        liblo.send(self.oscaddress, self.oscURI, "set", "aziDeg", azi, "elevDeg", ele, "gainDB", gain)
         
         
     def _getLocation(self):
