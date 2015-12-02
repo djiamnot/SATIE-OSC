@@ -11,7 +11,6 @@ def instanceHandler():
         currentObj = bpy.context.object
         if currentObj.select and currentObj.useSatie:
             if currentObj.satieID in sObj:
-                print("not adding {} to synths because it already exists: {}".format(currentObj, synths))
                 pass
             else:
                 print("acting on ", currentObj)
@@ -28,6 +27,7 @@ def instanceHandler():
 
 def instanceCb(scene):
     instanceHandler()
+    [o.updateAED() for o in synths]
     
 
 def cleanCallbackQueue():

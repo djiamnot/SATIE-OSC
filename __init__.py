@@ -69,7 +69,10 @@ def unregister():
     so.cleanCallbackQueue()
     bpy.types.Object.useSatie
     bpy.types.Object.satieID
-    bpy.types.Object.satieURI
+    bpy.types.Object.satieSynth
+    bpy.types.Object.satieGroup
+    bpy.types.Object.sendToSATIE
+    bpy.types.Object.state
 
 
 if __name__ == "__main__":
