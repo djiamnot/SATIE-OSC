@@ -15,7 +15,7 @@ def instanceHandler():
                 pass
             else:
                 print("acting on ", currentObj)
-                synths.append(ss.SatieSynth(currentObj, currentObj.satieID, currentObj.satieURI))
+                synths.append(ss.SatieSynth(currentObj, currentObj.satieID, currentObj.satieSynth))
                 print("current synths", synths)
         if not currentObj.useSatie and currentObj.satieID in sObj:
             print("contents of synths before remove {}".format(synths))

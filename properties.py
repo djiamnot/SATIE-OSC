@@ -22,6 +22,7 @@ class SatieProperties(bpy.types.Panel):
             #TheCol.operator("mesh.add_satie_properties", text = "SATIE properties")
             TheCol.prop(context.object, "useSatie")
             TheCol.prop(context.object, "satieID")
-            TheCol.prop(context.object, "satieURI")
+            TheCol.prop(context.object, "satieSynth")
+            TheCol.prop(context.object, "satieGroup")
             TheCol.prop(context.object, "sendToSATIE")
             TheCol.prop(context.object, "state")

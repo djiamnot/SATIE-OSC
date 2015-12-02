@@ -31,10 +31,15 @@ def register():
                 description = "Sound source ID",
                 default = "mySource"
             )
-    bpy.types.Object.satieURI = bpy.props.StringProperty(
-                name = "URI",
+    bpy.types.Object.satieSynth = bpy.props.StringProperty(
+                name = "Synth",
                 description = "SATIE plugin to use",
-                default = "plugin://default"
+                default = "default"
+            )
+    bpy.types.Object.satieGroup = bpy.props.StringProperty(
+                name = "Group",
+                description = "instrument/FX group",
+                default = "default"
             )
     bpy.types.Object.sendToSATIE = bpy.props.BoolProperty(
                 name = "Send to SATIE",
