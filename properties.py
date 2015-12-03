@@ -1,5 +1,7 @@
 import bpy
 
+from . import satie_object as so
+
 class SatieProperties(bpy.types.Panel):
     bl_space_type = "PROPERTIES"
     bl_region_type = "WINDOW"
@@ -26,3 +28,15 @@ class SatieProperties(bpy.types.Panel):
             TheCol.prop(context.object, "satieGroup")
             TheCol.prop(context.object, "sendToSATIE")
             TheCol.prop(context.object, "state")
+            TheCol.operator("satieinfo.button")
+
+class OBJECT_OT_Button(bpy.types.Operator):
+    bl_idname = "satieinfo.button"
+    bl_label = "Info"
+    bl_description = "Display some info"
+    def execute(self, context):
+        self.report({'INFO'}, "{}".format(context.object))
+        return{'FINISHED'}
+
+
+#bpy.utils.register_module(__name__)

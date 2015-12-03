@@ -18,6 +18,7 @@ addon_keymaps = []
 
 def register():
     print("registering SatieSynth")
+    bpy.utils.register_class(SatieProperties.OBJECT_OT_Button)
     bpy.utils.register_class(SatieProperties.SatieProperties)
     bpy.utils.register_class(so.SatieObject)
 
@@ -65,6 +66,7 @@ def unregister():
         km.keymap_items.remove(kmi)
     addon_keymaps.clear()
     bpy.utils.unregister_class(SatieProperties.SatieProperties)
+    bpy.utils.unregister_class(SatieProperties.OBJECT_OT_Button)
     bpy.utils.unregister_class(so.SatieObject)
     so.cleanCallbackQueue()
     bpy.types.Object.useSatie
