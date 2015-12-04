@@ -33,24 +33,26 @@ class SatieSynth():
         self.play()
 
     def setURI(self):
-        self.oscURI = os.path.join(self.oscbaseurl, self.group, self.id)
+        self.oscURI = os.path.join(self.oscbaseurl, self.group)
 
     def createSource(self):
-        liblo.send(self.oscaddress, self.oscURI, "create", self.id, self.synth)
+        liblo.send(self.oscaddress, self.oscbaseurl, "create", self.id, self.synth)
 
     def deleteNode(self):
         liblo.send(self.oscaddress, self.oscURI, "delete")
 
     def set(self, prop, val):
+        oscURI = os.path.join(self.oscbaseurl, self.group, self.id)
         if not val:
             self.playing = False
         else:
             self.playing = True
-        liblo.send(self.oscaddress, self.oscURI, prop, val)
+        liblo.send(self.oscaddress, oscURI, "set", prop, val)
 
     def play(self):
+        oscURI = os.path.join(self.oscbaseurl, self.group, self.id)
         print("play", self)
-        liblo.send(self.oscaddress, self.oscURI, "t_trig", 1)
+        liblo.send(self.oscaddress, oscURI, "set", "t_trig", 1)
         print("sent play")
         
         # uri = os.path.join(self.sourceOSCuri, "state")
@@ -61,8 +63,9 @@ class SatieSynth():
         #     liblo.send(self.oscaddress, uri, "t_trig", 1)
                 
     def updateAED(self):
+        oscURI = os.path.join(self.oscbaseurl, self.group, self.id)
         azi, ele, gain = self._getAED()
-        liblo.send(self.oscaddress, self.oscURI, "set", "aziDeg", azi, "elevDeg", ele, "gainDB", gain)
+        liblo.send(self.oscaddress, oscURI, "set", "aziDeg", azi, "elevDeg", ele, "gainDB", gain)
         
         
     def _getLocation(self):
