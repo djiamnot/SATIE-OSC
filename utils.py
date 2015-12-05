@@ -20,6 +20,7 @@ def xyz_to_aed(xyz):
     @param xyz - list of three floats.
     @return: list of three floats.
     """
+    aed = []
     x = xyz[0]
     y = xyz[1]
     z = xyz[2]
@@ -35,4 +36,12 @@ def xyz_to_aed(xyz):
         elevation = math.acos(z/distance)
     else:
         elevation = 0.0
-    return [azimuth, elevation, distance]
+
+    aed = rads2degs([azimuth, elevation])
+    aed.append(distance) 
+    return aed
+
+def rads2degs(v):
+    ret = map(math.degrees, v)
+    ret = list(ret)
+    return ret
