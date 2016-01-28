@@ -78,12 +78,10 @@ class SatieSynth():
         return location
 
     def _getParent(self):
-        parent = [o for o in bpy.context.selected_objects if o.satieID == self.id]
-        if len(parent) is 1:
-            return parent[0]
-        else:
-            print("something went wrong. there are {} parents, should be 1 and they are {} but I am {}".format(len(parent), parent, self.id))
-            print([o.satieID for o in parent])
+        listener = [o for o in bpy.context.visible_objects if o.satieID == self.id]
+        print("parent of {} is {}".format(self.id, listener))
+        return listener[0]
+
 
     def _getAED(self):
         distance = self._getLocation()
