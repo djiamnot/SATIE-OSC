@@ -1,14 +1,14 @@
 
 
 bl_info = {
-    "name": "UI test",
+    "name": "ASTIE OSC",
     "author": "Michal Seta",
-    "version": (0, 0, 0),
+    "version": (0, 1, 1),
     "blender": (2, 75, 0),
     "location": "View 3D > Tool Shelf > SATIE panel",
-    "warning": "Just testing boo",
-    "wiki_url": "http://me.me",
-    "description": "Testing some UI.",
+    "warning": "Early stages of development",
+    "wiki_url": "https://github.com/djiamnot/SATIE-OSC",
+    "description": "Author SATIE audio scenes with Blender",
     "category": "User",
 }
 
