@@ -1,7 +1,7 @@
 
 
 bl_info = {
-    "name": "ASTIE OSC",
+    "name": "SATIE OSC",
     "author": "Michal Seta",
     "version": (0, 1, 1),
     "blender": (2, 75, 0),
